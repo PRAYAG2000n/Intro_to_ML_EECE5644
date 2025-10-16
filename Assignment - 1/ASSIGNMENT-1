@@ -1,0 +1,197 @@
+Assignment – 1
+Prayag Sridhar
+10/10/2025
+Prof. Deniz Erdogmus
+
+Question – 1: ERM classification using the knowledge of true pdf
+3D scatter plot of the generated 10 000 Gaussian samples showing the separation between Class 0 (blue) and Class 1 (red) in the three-dimensional feature space.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Part-1.A: As per the minimum expected risk classification rule:
+ 
+
+Part-1.B: The figure below displays the ROC curve for minimum expected risk classification: 
+
+ 
+ 
+
+Part-1.C: The formula below is used to calculate the theoretical minimum risk
+Pe = 1− P (D = 0 | L = 0)*P(L=0) – P (D = 1 | L = 1)*P(L=1) or Pe = FPR * p0 + (1 - TPR) * p1
+p0 = 0.65; p1 = 0.35
+Calculated min-error probability: FPR = 0.0299; TPR = 0.8899; Tau = 0.503035; gamma = etau = 1.6537327408 
+Pe = (0.0299) (0.65) + (1−0.8899) (0.35) = 0.019435 + 0.038535 = 0.05797
+
+Theoretical probability: FPR = 0.0278; TPR = 0.8842; Tau = 0.619039; gamma = etau = 1.85714247
+Pe = (0.0278) (0.65) + (1−0.8842) (0.35) = 0.01807 + 0.04053 = 0.05860
+
+	Gamma	Min Pe
+Calculated	1.6537327408	0.05797
+Theoretical	1.85714247	0.05860
+
+Part-B: Naive Bayes classification
+The ROC curve of the naive bayes classification is given below:
+
+ 
+ 
+
+
+The formula below is used to calculate the probability:
+Pe = 1− P (D = 0 | L = 0)*P(L=0) – P (D = 1 | L = 1)*P(L=1) or Pe = FPR * p0 + (1 - TPR) * p1
+p0 = 0.65; p1 = 0.35
+Calculated min-error probability: FPR = 0.0264; TPR = 0.8589; Tau = 0.252288; gamma = etau = 1.2869663 
+Pe = (0.0264) (0.65) + (1−0.8589) (0.35) = 0.066545
+
+Theoretical probability: FPR = 0.0278; TPR = 0.8842; Tau = 0.619039; gamma = etau = 1.85714247
+Pe = (0.0180) (0.65) + (1−0.8301) (0.35) = 0.071165
+
+	Gamma	Minimum Pe
+Calculated	1.28696663	0.066545
+Theoretical	1.85714247	0.071165
+
+Did this model mismatch negatively impact your ROC curve and minimum achievable probability of error?
+
+When the Naive Bayes assumption was applied by setting both covariance matrices to the identity, the classifier performance declined compared to the Bayes-optimal case in Part A. Because this model ignores the correlations that actually exist among the three features, the likelihood estimates no longer represent the true class-conditional densities. As a result, the ROC curve flattened and shifted closer to the diagonal, indicating poorer discrimination between the two classes. The minimum probability of error also increased slightly from roughly 0.058 in the true model to about 0.067 in this current model showing that the classifier made more wrong decisions overall. In short, the independence assumption simplified the computation but caused a noticeable loss of accuracy, confirming that this model mismatch negatively affected both the ROC curve and the minimum achievable probability of error.
+
+
+
+
+
+
+
+
+
+
+
+Part-C: Fisher LDA classifier
+The Fisher LDA projection weight vector WLDA :
+ 
+ROC curve:
+ 
+ 
+Performance comparison of Fisher LDA classifier to the previous 2 classifiers:
+The Fisher LDA classifier's performance is in between both of the Bayes-optimal and Naive Bayes findings. The fisher LDA takes sample estimates of the class means and covariances and assumes that both classes have the same dispersion within the class. This means that it captures part of the correlation structure that the Naive Bayes model missed. 
+
+The ROC curve for LDA stays near to the upper-left corner, which means that it can tell the two classes apart very well, but not as well as the Bayes-optimal curve from Part A. The error probability for LDA (0.06558) is a little higher than the true-pdf case (about 0.0580) but better than the Naive Bayes case (about 0.0665). In general, LDA strikes a solid balance: its linear projection gives good separation at a low computational cost, resulting in accuracy that is almost perfect while avoiding the bigger drop in performance that comes from the independence requirement in the Naive Bayes classifier.
+
+Question-2: Gaussian class conditional pdf
+
+Part-A:
+Here I considered a two-dimensional random vector X = [x1, x2]T belonging to one of four possible classes L∈{1,2,3,4}.
+
+Each class is modeled by a Gaussian class-conditional pdf p(x | L = j) = N (x; MUj , SIGMAj) with equal priors P (L=j) = 0.25
+
+The mean and covariance matrices taken are:
+Mean of class 1: [2, 1]T
+Mean of class 2: [0, -3]T
+Mean of class 3: [-2, 1]T
+Mean of class 4: [0, 0]T
+
+Covariance of class 1: [4 -3;-3 4]
+Covariance of class 2: [3 0;0 1]
+Covariance of class 3: [4 3;3 4]
+Covariance of class 4: [1 0;0 1] 
+
+Decision rule (MAP): Under 0-1 loss, the classifier that minimizes probability of error chooses the class with the highest posterior probability:
+D(x)=argmax [p(x∣L=i)P(L=i)]
+
+Since all priors are equal, this simplifies to picking the class with the largest likelihood p(x | L = i).
+
+The confusion matrix from the 10000 samples:
+
+ 
+
+
+
+
+Visualization: 
+The samples were drawn in 2-D scatter plot where green implies correct and red implies incorrect.
+ 
+Part-B: Expected Risk Minimization
+
+The loss matrix used was:
+Λ = [0 10 10 100; 1 0 10 100;1 1 0 100;1 1 1 0]
+
+Decision rule: The expected-risk classifier chooses the class that minimizes conditional risk:
+Ri (x) = Sigma Λij P (L=j | x) and decides D(x) = arg min Ri (x).
+ 
+The estimated minimum risk from the 10000 samples is: 0.5309
+
+
+
+Visualization:
+A similar scatter plot was made for the ERM case.
+ 
+The ERM classifier clearly leans toward classifying ambiguous points as class 4, which makes sense given the high penalty (100) for mistakes on that class.
+
+Question – 3:
+In this experiment, I implemented a minimum-probability-of-error classifier under the assumption that the class-conditional distributions of the observed features are multivariate Gaussian. Two datasets from the UCI Machine Learning Repository were analyzed:
+	Wine Quality (White) – 4898 samples, 11 physicochemical features, and discrete quality scores ranging from 0 to 10.
+	Human Activity Recognition (HAR) – 10299 samples, 561 features, and 6 activity labels collected from smartphone sensors.
+The goal is to estimate class priors, means, and covariance matrices from data, apply a Bayes decision rule that minimizes the expected classification error, and evaluate the resulting confusion matrices. I also examined whether the Gaussian assumption is reasonable for these datasets.
+
+
+
+
+
+Modeling Assumptions: 
+Each class L = k is modeled as a multivariate Gaussian: p ( x | L = k) = N (x | Muₖ, Cₖ).
+
+Class priors were estimated using relative sample frequency: Piₖ^ = Nₖ / N where Nₖ and N are the number of samples in class k and the total number of samples respectively.
+
+Sample means and covariances were calculated as:
+
+Pi^ₖ = (1 / Nₖ) Σ xᵢ, 
+Ĉₖ = (1 / (Nₖ – 1)) Σ (xᵢ – μ̂ₖ)(xᵢ – μ̂ₖ)ᵀ.
+Because covariance matrices can be ill-conditioned in high-dimensional settings, a regularization term was added: Cₖ (reg) = Ĉₖ + λₖ I ; λₖ = alpha · (trace(Ĉₖ) / rank(Ĉₖ)) where alpha = 0.05 ensures positive definite covariance matrices without over-smoothing.
+
+Classification Rule:
+For each sample x, the log-discriminant function is computed for each class:
+gₖ(x) = log Pi^ₖ – 0.5 log|Cₖ (reg)| – 0.5 (x – Mu^ₖ)ᵀ (Cₖ (reg))⁻¹ (x – Mu^ₖ).
+
+The predicted label is L (^) = arg maxₖ gₖ(x).
+
+For both datasets, class priors were derived directly from the empirical proportions of samples in each category.
+
+Results:
+1: Wine Quality (White)
+ 
+
+ 
+The overall training-set error rate was = 0.7393, consistent with the moderate separability observed in the 3-D PCA plot, where points formed a large, continuous cluster rather than distinct groups.
+
+2: Human Activity Recognition (HAR) 
+For the HAR dataset, the classifier was trained using 10,299 samples spanning six activity categories. Regularization values λₖ were much smaller (like 10⁻²) since the high-dimensional sensor data already exhibited well-spread eigenvalues.
+ 
+ 
+
+The train-set confusion matrix displayed strong diagonal dominance with overall accuracy = 93.14 % ( P(error) = 0.0686 ).
+
+The class-wise errors were lowest for WALKING, WALKING_UPSTAIRS, and WALKING_DOWNSTAIRS, while SITTING and STANDING occasionally overlapped; these postures produce similar accelerometer and gyroscope readings.
+
+The 3-D PCA visualization further confirmed this: dynamic activities formed well-separated elongated manifolds, whereas static activities clustered closely together.
+
+Online repository where I have uploaded all the codes:
+https://github.com/PRAYAG2000n/Intro_to_ML_EECE5644/tree/main/Assignment%20-%201
+
+Citations and References:
+LDA: https://github.com/rajs96/QDA-LDA-Classifier
+https://github.com/utsavberi/MachineLearning_ClassificationAndRegression
+Gaussian Mixture Model From Scratch: https://github.com/DandiMahendris/Gaussian-mixture-from-scratch
+Naïve Bayes: https://github.com/gbroques/naive-bayes
+https://kuleshov-group.github.io/aml-book/contents/lecture7-gaussian-discriminant-analysis.html
+
