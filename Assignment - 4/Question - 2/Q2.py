@@ -241,6 +241,7 @@ def main():
 
     # Tiger image URL (GitHub mirror - reliable)
     image_url = "https://raw.githubusercontent.com/BIDS/BSDS500/master/BSDS500/data/images/train/108073.jpg"
+    # The user can also use other images from https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/segbench/BSDS300/html/dataset/images.html link
     
     # 1. LOAD IMAGE 
     print("\n1. LOADING AND PREPROCESSING IMAGE")
@@ -299,7 +300,7 @@ def main():
     # 6. SEGMENT IMAGE
     print("\n6. SEGMENTING IMAGE")
     print("-" * 40)
-    print("Assigning pixels to most likely component using posterior probabilities...")
+    print("Assigning pixels to most likely component using posterior probabilities")
     labels, posteriors = segment_image(final_gmm, features, original_shape)
     print(f"Segmentation complete!")
     print(f"Label image shape: {labels.shape}")
